@@ -18,6 +18,7 @@ public class Main {
         Shape triangle = new Triangle(3.0, 8.0);
 
         System.out.println("--- Shape Area Calculator ---");
+        System.out.println();
         
         // Executing methods via the interface
         circle.displayDetails();
@@ -64,7 +65,7 @@ public class Rectangle implements Shape {
     private double width;
     private double length;
 
-    public Rectangle(double width, double length) {
+    public Rectangle(double length, double width) {
         this.width = width;
         this.length = length;
     }
