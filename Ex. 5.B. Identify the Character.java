@@ -1,47 +1,84 @@
 //Program:
 
-//Ex. 5.B. Write a Java program that accepts two strings from the user and checks if they are anagrams of each other.
-//Given two strings s and t, return true if t is an anagram of s, and false otherwise.
+//Ex. 5.B. Write a Java program that accepts a string from the user and identifies different types of characters
+//The program should count and display vowels, consonants, digits, and special characters.
 
 import java.util.Scanner;
-import java.util.Arrays;
 
 public class CharacterCounter {
     public static void main(String[] args) {
         // Initialize Scanner for user input
         Scanner scanner = new Scanner(System.in);
         
-        System.out.print("Input s = ");
-        String s = scanner.nextLine();
+        System.out.print("Enter a string: ");
+        String input = scanner.nextLine();
         
-        System.out.print("Input t = ");
-        String t = scanner.nextLine();
+        // Count different types of characters
+        int vowels = 0;
+        int consonants = 0;
+        int digits = 0;
+        int specialCharacters = 0;
         
-        // Check if the strings are anagrams
-        boolean result = isAnagram(s, t);
+        String vowelsList = "";
+        String consonantsList = "";
+        String digitsList = "";
+        String specialCharsList = "";
         
-        // Display the result
-        System.out.println(result);
+        // Convert to lowercase for vowel checking
+        String lowerInput = input.toLowerCase();
+        
+        // Iterate through each character
+        for (int i = 0; i < input.length(); i++) {
+            char ch = input.charAt(i);
+            char lowerCh = lowerInput.charAt(i);
+            
+            if (Character.isLetter(ch)) {
+                // Check if it's a vowel
+                if (lowerCh == 'a' || lowerCh == 'e' || lowerCh == 'i' || lowerCh == 'o' || lowerCh == 'u') {
+                    vowels++;
+                    vowelsList += lowerCh + ", ";
+                } else {
+                    consonants++;
+                    consonantsList += ch + ", ";
+                }
+            } else if (Character.isDigit(ch)) {
+                digits++;
+                digitsList += ch + ", ";
+            } else if (!Character.isWhitespace(ch)) {
+                // Count special characters (excluding spaces)
+                specialCharacters++;
+                specialCharsList += ch + ", ";
+            }
+        }
+        
+        // Remove trailing comma and space if present
+        if (vowelsList.length() > 0) {
+            vowelsList = vowelsList.substring(0, vowelsList.length() - 2);
+        }
+        if (consonantsList.length() > 0) {
+            consonantsList = consonantsList.substring(0, consonantsList.length() - 2);
+        }
+        if (digitsList.length() > 0) {
+            digitsList = digitsList.substring(0, digitsList.length() - 2);
+        }
+        if (specialCharsList.length() > 0) {
+            specialCharsList = specialCharsList.substring(0, specialCharsList.length() - 2);
+        }
+        
+        // Display the results
+        System.out.println("\nVowels: " + vowels);
+        System.out.println("Consonants: " + consonants);
+        System.out.println("Digits: " + digits);
+        System.out.println("Special Characters: " + specialCharacters);
+        
+        System.out.println("\nBreakdown for \"" + input + "\":");
+        System.out.println("Vowels: " + (vowelsList.isEmpty() ? "none" : vowelsList) + "→ " + vowels);
+        System.out.println("Consonants: " + (consonantsList.isEmpty() ? "none" : consonantsList) + "→ " + consonants);
+        System.out.println("Digits: " + (digitsList.isEmpty() ? "none" : digitsList) + "→ " + digits);
+        System.out.println("Special Characters: " + (specialCharsList.isEmpty() ? "none" : specialCharsList) + "→ " + specialCharacters);
+        System.out.println("(spaces are excluded from special characters)");
         
         // Close the scanner resource
         scanner.close();
-    }
-    
-    // Method to check if two strings are anagrams
-    public static boolean isAnagram(String s, String t) {
-        // If lengths are different, they cannot be anagrams
-        if (s.length() != t.length()) {
-            return false;
-        }
-        
-        // Convert both strings to character arrays and sort them
-        char[] sArray = s.toLowerCase().toCharArray();
-        char[] tArray = t.toLowerCase().toCharArray();
-        
-        Arrays.sort(sArray);
-        Arrays.sort(tArray);
-        
-        // Compare the sorted arrays
-        return Arrays.equals(sArray, tArray);
     }
 }
