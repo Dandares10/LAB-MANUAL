@@ -8,18 +8,21 @@
 import shapes.Shape;
 import shapes.Circle;
 import shapes.Rectangle;
+import shapes.Triangle;
 
 public class Main {
     public static void main(String[] args) {
         // Polymorphism: Using interface type for object references
         Shape circle = new Circle(5.0);
         Shape rectangle = new Rectangle(4.0, 6.0);
+        Shape triangle = new Traingle(3.0, 8.0);
 
         System.out.println("--- Shape Area Calculator ---");
         
         // Executing methods via the interface
         circle.displayDetails();
         rectangle.displayDetails();
+        triangle.displayDetails();
     }
 }
 
@@ -51,7 +54,7 @@ public class Circle implements Shape {
 
     @Override
     public void displayDetails() {
-        System.out.printf("Circle - Radius: %.2f | Area: %.2f%n", radius, calculateArea());
+        System.out.printf("Circle:%n  Radius = %.1f %n Area of Circle = %f%n", radius, calculateArea());
     }
 }
 
@@ -73,6 +76,28 @@ public class Rectangle implements Shape {
 
     @Override
     public void displayDetails() {
-        System.out.printf("Rectangle - Width: %.2f, Height: %.2f | Area: %.2f%n", width, height, calculateArea());
+        System.out.printf("Rectangle:%n Length = %.1f, Width = %.1f%n Area of Rectangle = %.1f%n", height, width, calculateArea());
+    }
+}
+
+package shapes;
+
+public class Triangle implements Shape {
+    private double base;
+    private double height;
+
+    public Rectangle(double base, double height) {
+        this.base = base;
+        this.height = height;
+    }
+
+    @Override
+    public double calculateArea() {
+        return 0.5*base * height;
+    }
+
+    @Override
+    public void displayDetails() {
+        System.out.printf("Triange:%n Base = %.1f, Height = %.1f%n Area of Triangle = %.1f%n", base, height, calculateArea());
     }
 }
