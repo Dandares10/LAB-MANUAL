@@ -72,11 +72,11 @@ public class CharacterCounter {
         System.out.println("Special Characters: " + specialCharacters);
         
         System.out.println("\nBreakdown for \"" + input + "\":");
-        System.out.println("Vowels: " + (vowelsList.isEmpty() ? "none" : vowelsList) + "→ " + vowels);
+        System.out.println("\nVowels: " + (vowelsList.isEmpty() ? "none" : vowelsList) + "→ " + vowels);
         System.out.println("Consonants: " + (consonantsList.isEmpty() ? "none" : consonantsList) + "→ " + consonants);
         System.out.println("Digits: " + (digitsList.isEmpty() ? "none" : digitsList) + "→ " + digits);
         System.out.println("Special Characters: " + (specialCharsList.isEmpty() ? "none" : specialCharsList) + "→ " + specialCharacters);
-        System.out.println("(spaces are excluded from special characters)");
+        System.out.println("(spaces are often excluded depending on how you define special characters)");
         
         // Close the scanner resource
         scanner.close();
