@@ -35,8 +35,8 @@ public class CharacterCounter {
         }
         
         // Convert both strings to character arrays and sort them
-        char[] sArray = s.toCharArray();
-        char[] tArray = t.toCharArray();
+        char[] sArray = s.toLowerCase().toCharArray();
+        char[] tArray = t.toLowerCase().toCharArray();
         
         Arrays.sort(sArray);
         Arrays.sort(tArray);
