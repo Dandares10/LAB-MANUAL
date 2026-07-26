@@ -54,7 +54,7 @@ public class Circle implements Shape {
 
     @Override
     public void displayDetails() {
-        System.out.printf("Circle:%n  Radius = %.1f %n Area of Circle = %f%n", radius, calculateArea());
+        System.out.printf("Circle:%nRadius = %.1f %nArea of Circle = %f%n", radius, calculateArea());
     }
 }
 
@@ -76,7 +76,7 @@ public class Rectangle implements Shape {
 
     @Override
     public void displayDetails() {
-        System.out.printf("Rectangle:%n Length = %.1f, Width = %.1f%n Area of Rectangle = %.1f%n", height, width, calculateArea());
+        System.out.printf("Rectangle:%nLength = %.1f, Width = %.1f%nArea of Rectangle = %.1f%n", height, width, calculateArea());
     }
 }
 
@@ -98,6 +98,6 @@ public class Triangle implements Shape {
 
     @Override
     public void displayDetails() {
-        System.out.printf("Triange:%n Base = %.1f, Height = %.1f%n Area of Triangle = %.1f%n", base, height, calculateArea());
+        System.out.printf("Triange:%nBase = %.1f, Height = %.1f%nArea of Triangle = %.1f%n", base, height, calculateArea());
     }
 }
