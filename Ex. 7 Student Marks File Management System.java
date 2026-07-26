@@ -1,79 +1,54 @@
-
 //Program:
 
 //Ex. 7 Design a Student Marks File Management System that stores, retrieves, and updates student marks using Java File Handling
 
+import java.io.*;
+import java.util.Scanner;
+
 public class MainApplication {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        while (true) {
-            System.out.println("\n=== STUDENT MARKS MANAGEMENT SYSTEM ===");
-            System.out.println("1. Add New Student Record");
-            System.out.println("2. View All Student Marks");
-            System.out.println("3. Search Student by Roll Number");
-            System.out.println("4. Update Student Marks");
-            System.out.println("5. Terminate Application");
-            System.out.print("Select operational choice (1-5): ");
-
-            String inputChoice = scanner.nextLine();
-            switch (inputChoice) {
-                case "1":
-                    System.out.print("Enter unique Roll Number: ");
-                    String roll = scanner.nextLine().trim();
-                    System.out.print("Enter Student Full Name: ");
-                    String name = scanner.nextLine().trim();
-                    System.out.print("Enter Student Marks: ");
-                    double marks;
-                    try {
-                        marks = Double.parseDouble(scanner.nextLine());
-                    } catch (NumberFormatException e) {
-                        System.out.println("❌ Parsing Exception: Invalid marks input format numerical conversion failed.");
-                        break;
-                    }
-                    StudentMarksManager.addStudentRecord(roll, name, marks);
-                    break;
-
-                case "2":
-                    StudentMarksManager.displayAllRecords();
-                    break;
-
-                case "3":
-                    System.out.print("Enter Target Roll Number to search: ");
-                    String searchRoll = scanner.nextLine().trim();
-                    StudentMarksManager.searchStudentRecord(searchRoll);
-                    break;
-
-                case "4":
-                    System.out.print("Enter Target Roll Number to update: ");
-                    String updateRoll = scanner.nextLine().trim();
-                    System.out.print("Enter New Marks value: ");
-                    double updatedMarks;
-                    try {
-                        updatedMarks = Double.parseDouble(scanner.nextLine());
-                    } catch (NumberFormatException e) {
-                        System.out.println("❌ Parsing Exception: Invalid numerical value for new marks.");
-                        break;
-                    }
-                    StudentMarksManager.updateStudentMarks(updateRoll, updatedMarks);
-                    break;
-
-                case "5":
-                    System.out.print("Exiting application safely... Goodbye!");
-                    scanner.close();
-                    System.exit(0);
-
-                default:
-                    System.out.println("❌ Invalid choice token selection. Choose a number between 1 and 5.");
+        
+        System.out.println("Enter Details of 3 Students\n");
+        
+        // Add 3 student records
+        for (int i = 1; i <= 3; i++) {
+            System.out.println("Student " + i);
+            System.out.print("Roll No: ");
+            String roll = scanner.nextLine().trim();
+            System.out.print("Name: ");
+            String name = scanner.nextLine().trim();
+            System.out.print("Marks: ");
+            double marks;
+            try {
+                marks = Double.parseDouble(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Invalid marks input. Please enter a valid number.");
+                i--; // Retry this student
+                continue;
             }
+            StudentMarksManager.addStudentRecord(roll, name, marks);
+            System.out.println();
         }
+        
+        System.out.println("Student records saved successfully.\n");
+        
+        // Display all records
+        System.out.println("Student Records");
+        System.out.println("-----");
+        StudentMarksManager.displayAllRecords();
+        
+        // Search for a student
+        System.out.print("Enter Roll Number to Search: ");
+        String searchRoll = scanner.nextLine().trim();
+        StudentMarksManager.searchStudentRecord(searchRoll);
+        
+        scanner.close();
     }
 }
 
 
-import java.io.*;
-import java.util.Scanner;
-
-public class StudentMarksManager {
+class StudentMarksManager {
     private static final String FILE_NAME = "students_marks.txt";
 
     // 1. CREATE: Add a new student mark record
@@ -87,7 +62,6 @@ public class StudentMarksManager {
             Student student = new Student(rollNum, name, marks);
             writer.write(student.toCsvString());
             writer.newLine();
-            System.out.println("✅ Student record successfully added!");
         } catch (IOException e) {
             System.out.println("❌ Fatal Error writing to database file: " + e.getMessage());
         }
@@ -101,16 +75,14 @@ public class StudentMarksManager {
             return;
         }
 
-        System.out.println("\n--- Stored Student Marks ---");
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",");
                 if (data.length == 3) {
-                    System.out.println("Roll No: " + data[0] + " | Name: " + data[1] + " | Marks: " + data[2]);
+                    System.out.println(data[0] + ", " + data[1] + ", " + data[2]);
                 }
             }
-            System.out.println("----------------------------");
         } catch (IOException e) {
             System.out.println("❌ Error reading data from file: " + e.getMessage());
         }
@@ -124,12 +96,10 @@ public class StudentMarksManager {
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",");
                 if (data[0].equalsIgnoreCase(rollNum)) {
-                    System.out.println("\n🔍 Record Found:");
-                    System.out.println("=================================");
-                    System.out.println("Roll Number : " + data[0]);
-                    System.out.println("Student Name: " + data[1]);
-                    System.out.println("Marks       : " + data[2]);
-                    System.out.println("=================================");
+                    System.out.println("\nStudent Found");
+                    System.out.println("Roll No: " + data[0]);
+                    System.out.println("Name: " + data[1]);
+                    System.out.println("Marks: " + data[2]);
                     found = true;
                     break;
                 }
@@ -201,9 +171,7 @@ public class StudentMarksManager {
 }
 
 
-import java.io.Serializable;
-
-public class Student {
+class Student {
     private String rollNumber;
     private String name;
     private double marks;
