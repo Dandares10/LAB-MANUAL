@@ -28,7 +28,7 @@ abstract class PiCalculatorBase {
 
     // Protected method to display precision info
     protected void displayPrecisionInfo() {
-        System.out.println("\nProtected Method - Displaying Precision Info: Precision used: " + termsUsed + " terms");
+        System.out.println("\nProtected Method - Displaying Precision Info: \nPrecision used: " + termsUsed + " terms");
         System.out.println("Series used: Leibniz Series (4/1 - 4/3+4/5 - 4/7+4/9..)");
         System.out.println();
     }
