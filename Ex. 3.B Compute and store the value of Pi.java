@@ -81,7 +81,7 @@ public class PiManager extends PiCalculatorBase {
 
     // Public method to display result
     public void displayPublicResult() {
-        System.out.println("Public Method - Displaying Result: Approximated value of Pi: " + this.calculatedPi);
+        System.out.println("Public Method - Displaying Result:\nApproximated value of Pi: " + this.calculatedPi);
         System.out.println();
     }
 
