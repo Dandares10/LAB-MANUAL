@@ -1,4 +1,3 @@
-
 //Ex. B Design and implement an Employee Data Analytics program that uses Java Stream API and Lambda Expressions to filter, sort, group, and summarize employee data
 
 //Program:
@@ -11,10 +10,7 @@ public record Employee(
     int id,
     String name,
     String department,
-    String role,
-    double salary,
-    int age,
-    List<String> skills
+    double salary
 ) {}
 
 package analytics;
@@ -27,74 +23,75 @@ public class EmployeeAnalytics {
     public static void main(String[] args) {
         List<Employee> employees = getSampleEmployees();
 
-        System.out.println("=== 1. FILTERING: High-Earning Software Engineers ===");
-        // Filters by role and salary threshold
+        System.out.println("---- All Employees ----");
+        employees.forEach(e -> System.out.println(e.id()));
+
+        System.out.println("\n---- Employees Details ----");
+        employees.forEach(e -> System.out.println(e.getName() + " " + e.getDepartment() + " " + e.getSalary()));
+
+        System.out.println("\n---- Salary Above 50000 (High to Low) ----");
+        // Filter by salary >= 50000 and sort by salary in descending order
         List<Employee> highEarners = employees.stream()
-                .filter(e -> "Engineering".equalsIgnoreCase(e.getDepartment()))
-                .filter(e -> "Software Engineer".equalsIgnoreCase(e.getRole()))
-                .filter(e -> e.getSalary() >= 90000)
+                .filter(e -> e.getSalary() >= 50000)
+                .sorted(Comparator.comparingDouble(Employee::getSalary).reversed())
                 .collect(Collectors.toList());
-        highEarners.forEach(e -> System.out.printf(" - %s ($%.2f)%n", e.getName(), e.getSalary()));
+        highEarners.forEach(e -> System.out.println(e.getName() + " -> " + e.getSalary()));
 
-        System.out.println("\n=== 2. SORTING: Employees by Salary (Desc), then Age (Asc) ===");
-        // Uses chained comparators for deep sorting
-        List<Employee> sortedEmployees = employees.stream()
-                .sorted(Comparator.comparingDouble(Employee::getSalary).reversed()
-                        .thenComparingInt(Employee::getAge))
+        System.out.println("\n---- Employee Names ----");
+        // Extract all employee names into a list
+        List<String> names = employees.stream()
+                .map(Employee::getName)
                 .collect(Collectors.toList());
-        sortedEmployees.forEach(e -> System.out.printf(" - %s: $%.2f, Age: %d%n", 
-                e.getName(), e.getSalary(), e.getAge()));
+        System.out.println(names);
 
-        System.out.println("\n=== 3. GROUPING: Headcount and Employees by Department ===");
-        // Groups employees entirely by department name
-        Map<String, List<Employee>> employeesByDept = employees.stream()
-                .collect(Collectors.groupingBy(Employee::getDepartment));
-        employeesByDept.forEach((dept, deptList) -> {
-            System.out.printf(" Department: %s (Count: %d)%n", dept, deptList.size());
-            deptList.forEach(e -> System.out.println("   * " + e.getName()));
-        });
-
-        System.out.println("\n=== 4. SUMMARIZATION: Salary Statistics by Department ===");
-        // Computes count, sum, min, average, and max simultaneously per department
-        Map<String, DoubleSummaryStatistics> salaryStatsByDept = employees.stream()
+        System.out.println("\n---- Employees Grouped by Department ----");
+        // Group employees by department
+        Map<String, List<String>> employeesByDept = employees.stream()
                 .collect(Collectors.groupingBy(
                         Employee::getDepartment,
-                        Collectors.summarizingDouble(Employee::getSalary)
+                        Collectors.mapping(Employee::getName, Collectors.toList())
                 ));
-        salaryStatsByDept.forEach((dept, stats) -> {
-            System.out.printf(" Department: %s%n", dept);
-            System.out.printf("   * Average Salary : $%.2f%n", stats.getAverage());
-            System.out.printf("   * Highest Salary : $%.2f%n", stats.getMax());
-            System.out.printf("   * Total Budget   : $%.2f%n", stats.getSum());
-        });
+        employeesByDept.forEach((dept, names_list) -> 
+            System.out.println(dept + ": " + names_list)
+        );
 
-        System.out.println("\n=== 5. ADVANCED: Unique Skills Across the Company ===");
-        // Uses flatMap to flatten individual skill lists into a single distinct stream
-        List<String> uniqueSkills = employees.stream()
-                .flatMap(e -> e.getSkills().stream())
-                .map(String::toLowerCase)
-                .distinct()
-                .sorted()
-                .collect(Collectors.toList());
-        System.out.println(" Technical Footprint: " + uniqueSkills);
+        System.out.println("\n---- Average Salary per Department ----");
+        // Calculate average salary by department
+        Map<String, Double> avgSalaryByDept = employees.stream()
+                .collect(Collectors.groupingBy(
+                        Employee::getDepartment,
+                        Collectors.averagingDouble(Employee::getSalary)
+                ));
+        avgSalaryByDept.forEach((dept, avgSalary) -> 
+            System.out.printf("%s: %.2f%n", dept, avgSalary)
+        );
 
-        System.out.println("\n=== 6. REDUCTION: Highest Paid Employee ===");
-        // Uses reduce operation to find the max value safely
+        System.out.println("\n---- Summary Statistics ----");
+        // Total salary paid
+        double totalSalary = employees.stream()
+                .mapToDouble(Employee::getSalary)
+                .sum();
+        System.out.printf("Total Salary Paid: %.2f ", totalSalary);
+
+        // Number of CSE employees
+        long cseCount = employees.stream()
+                .filter(e -> "CSE".equalsIgnoreCase(e.getDepartment()))
+                .count();
+        System.out.printf("Number of CSE Employees: %d ", cseCount);
+
+        // Highest paid employee
         employees.stream()
-                .reduce((e1, e2) -> e1.getSalary() > e2.getSalary() ? e1 : e2)
-                .ifPresent(e -> System.out.printf(" Top Earner: %s ($%.2f) in %s%n", 
-                        e.getName(), e.getSalary(), e.getDepartment()));
+                .max(Comparator.comparingDouble(Employee::getSalary))
+                .ifPresent(e -> System.out.printf("Highest Paid: %s (%.1f)%n", e.getName(), e.getSalary()));
     }
 
     private static List<Employee> getSampleEmployees() {
         return Arrays.asList(
-            new Employee(1, "Alice Smith", "Engineering", "Software Engineer", 95000, 28, Arrays.asList("Java", "Spring", "Docker")),
-            new Employee(2, "Bob Jones", "Engineering", "Software Engineer", 88000, 25, Arrays.asList("Java", "AWS", "Kubernetes")),
-            new Employee(3, "Charlie Brown", "Engineering", "Tech Lead", 120000, 35, Arrays.asList("Java", "Architecture", "Cloud")),
-            new Employee(4, "Diana Prince", "HR", "HR Manager", 75000, 32, Arrays.asList("Recruiting", "Communication")),
-            new Employee(5, "Evan Wright", "Marketing", "Data Analyst", 71000, 29, Arrays.asList("Python", "SQL", "Tableau")),
-            new Employee(6, "Fiona Gallagher", "Engineering", "Software Engineer", 95000, 24, Arrays.asList("Python", "Go", "Docker")),
-            new Employee(7, "George Costanza", "Marketing", "Director", 110000, 41, Arrays.asList("Strategy", "SEO"))
+            new Employee(101, "Rahul", "CSE", 55000.0),
+            new Employee(102, "Sneha", "ECE", 62000.0),
+            new Employee(103, "Kiran", "CSE", 48000.0),
+            new Employee(104, "Divya", "MECH", 51000.0),
+            new Employee(105, "Arjun", "ECE", 70000.0)
         );
     }
 }
