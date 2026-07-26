@@ -45,12 +45,7 @@ public class CharacterCounter {
         }
         
         // Display the results
-        System.out.println("\n--- Character Counts ---");
-        System.out.println("Vowels: " + vowels);
-        System.out.println("Consonants: " + consonants);
-        System.out.println("Digits: " + digits);
-        System.out.println("Special Characters (including spaces): " + specialChars);
-        
+       
         // Close the scanner resource
         scanner.close();
     }
