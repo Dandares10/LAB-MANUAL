@@ -1,4 +1,6 @@
 
+import java.util.Scanner;
+
 //Program:
 
 //Ex. 3.B Design a class that computes and stores the value of Pi using public, private, and protected access specifiers to control member access
@@ -7,19 +9,27 @@
 abstract class PiCalculatorBase {
     // Accessible by derived classes, hidden from unrelated classes
     protected double calculatedPi;
+    protected int termsUsed;
 
     // Uses the Leibniz formula to estimate Pi
     protected void computeLeibniz(int iterations) {
         double sum = 0.0;
         for (int i = 0; i < iterations; ++i) {
-            double term = 1.0 / (2 * i + 1);
+            double term = 4.0 / (2 * i + 1);
             if (i % 2 == 0) {
                 sum += term;
             } else {
                 sum -= term;
             }
         }
-        this.calculatedPi = sum * 4.0;
+        this.calculatedPi = sum;
+        this.termsUsed = iterations;
+    }
+
+    // Protected method to display precision info
+    protected void displayPrecisionInfo() {
+        System.out.println("\nProtected Method - Displaying Precision Info: Precision used: " + termsUsed + " terms");
+        System.out.println("Series used: Leibniz Series (4/1 - 4/3+4/5 - 4/7+4/9..)");
     }
 }
 
@@ -27,10 +37,16 @@ abstract class PiCalculatorBase {
 public class PiManager extends PiCalculatorBase {
     // Completely hidden; accessible only within this class
     private int precisionIterations;
+    private double rawComputedValue;
 
     // Private helper method for internal data validation
     private boolean isValidIterationCount(int iterations) {
         return iterations > 0;
+    }
+
+    // Private method to display private data
+    private void displayPrivateData() {
+        System.out.println("\nPrivate Data - Accessed only within class: Raw computed value (private): " + this.rawComputedValue);
     }
 
     // Public constructor
@@ -41,12 +57,14 @@ public class PiManager extends PiCalculatorBase {
             this.precisionIterations = 1000; // Default fallback
         }
         this.calculatedPi = 0.0;
+        this.rawComputedValue = 0.0;
     }
 
     // Public interface to trigger calculation
     public void runCalculation() {
         // Inherited protected method
-        computeLeibniz(precisionIterations); 
+        computeLeibniz(precisionIterations);
+        this.rawComputedValue = this.calculatedPi;
     }
 
     // Public getter to retrieve the stored value
@@ -60,17 +78,33 @@ public class PiManager extends PiCalculatorBase {
         return this.precisionIterations;
     }
 
+    // Public method to display result
+    public void displayPublicResult() {
+        System.out.println("Public Method - Displaying Result: Approximated value of Pi: " + this.calculatedPi);
+    }
+
     // Main method to run the application
     public static void main(String[] args) {
-        // Instantiate the manager with 1,000,000 iterations
-        PiManager piObj = new PiManager(1000000);
+        System.out.println("== Pi Calculator using Access Specifiers\n");
+        
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the number of terms for Pi approximation: ");
+        int terms = scanner.nextInt();
+        
+        System.out.println("\nCalculating Pi using Leibniz Series...");
+        
+        // Instantiate the manager with user-provided iterations
+        PiManager piObj = new PiManager(terms);
         
         // Compute and retrieve the value
         piObj.runCalculation();
         
-        System.out.println("Iterations used: " + piObj.getIterations());
-        System.out.println("Computed Value of Pi: " + piObj.getPi());
-        System.out.println("Standard Math.PI reference: " + Math.PI);
+        // Display results using different access specifiers
+        piObj.displayPublicResult();
+        piObj.displayPrecisionInfo();
+        piObj.displayPrivateData();
+        
+        scanner.close();
     }
 }
 
