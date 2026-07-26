@@ -15,7 +15,7 @@ public class Main {
         // Polymorphism: Using interface type for object references
         Shape circle = new Circle(5.0);
         Shape rectangle = new Rectangle(4.0, 6.0);
-        Shape triangle = new Traingle(3.0, 8.0);
+        Shape triangle = new Triangle(3.0, 8.0);
 
         System.out.println("--- Shape Area Calculator ---");
         
@@ -86,7 +86,7 @@ public class Triangle implements Shape {
     private double base;
     private double height;
 
-    public Rectangle(double base, double height) {
+    public Triangle(double base, double height) {
         this.base = base;
         this.height = height;
     }
