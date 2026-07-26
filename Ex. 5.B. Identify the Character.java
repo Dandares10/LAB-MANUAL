@@ -11,10 +11,10 @@ public class CharacterCounter {
         // Initialize Scanner for user input
         Scanner scanner = new Scanner(System.in);
         
-        System.out.print("Enter first string (s): ");
+        System.out.print("Input s = ");
         String s = scanner.nextLine();
         
-        System.out.print("Enter second string (t): ");
+        System.out.print("Input t = ");
         String t = scanner.nextLine();
         
         // Check if the strings are anagrams
