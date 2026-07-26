@@ -30,6 +30,7 @@ abstract class PiCalculatorBase {
     protected void displayPrecisionInfo() {
         System.out.println("\nProtected Method - Displaying Precision Info: Precision used: " + termsUsed + " terms");
         System.out.println("Series used: Leibniz Series (4/1 - 4/3+4/5 - 4/7+4/9..)");
+        System.out.println();
     }
 }
 
@@ -46,7 +47,7 @@ public class PiManager extends PiCalculatorBase {
 
     // Private method to display private data
     private void displayPrivateData() {
-        System.out.println("\nPrivate Data - Accessed only within class: Raw computed value (private): " + this.rawComputedValue);
+        System.out.println("\nPrivate Data - Accessed only within class: \nRaw computed value (private): " + this.rawComputedValue);
     }
 
     // Public constructor
@@ -81,17 +82,19 @@ public class PiManager extends PiCalculatorBase {
     // Public method to display result
     public void displayPublicResult() {
         System.out.println("Public Method - Displaying Result: Approximated value of Pi: " + this.calculatedPi);
+        System.out.println();
     }
 
     // Main method to run the application
     public static void main(String[] args) {
-        System.out.println("== Pi Calculator using Access Specifiers\n");
+        System.out.println("=== Pi Calculator using Access Specifiers ===\n");
         
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the number of terms for Pi approximation: ");
         int terms = scanner.nextInt();
         
         System.out.println("\nCalculating Pi using Leibniz Series...");
+        System.out.println();
         
         // Instantiate the manager with user-provided iterations
         PiManager piObj = new PiManager(terms);
