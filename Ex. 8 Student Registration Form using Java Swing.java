@@ -49,7 +49,7 @@ public class StudentRegistrationForm extends JFrame implements ActionListener {
         add(rollTextField);
 
         // Course Label and Dropdown ComboBox
-        courseLabel = new JLabel("Course:");
+        courseLabel = new JLabel("Skill:");
         courseLabel.setBounds(40, 180, 100, 25);
         add(courseLabel);
 
@@ -88,7 +88,7 @@ public class StudentRegistrationForm extends JFrame implements ActionListener {
                 String message = "Registration Successful!\n\n" +
                                  "Name: " + name + "\n" +
                                  "Roll Number: " + roll + "\n" +
-                                 "Course: " + course;
+                                 "Skill: " + course;
                 JOptionPane.showMessageDialog(this, message, "Success", JOptionPane.INFORMATION_MESSAGE);
             }
         } else if (e.getSource() == clearButton) {
