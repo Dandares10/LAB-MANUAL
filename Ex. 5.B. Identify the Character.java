@@ -1,52 +1,47 @@
 //Program:
 
-//Ex. 5.B. Write a Java program that accepts a string from the user and counts the number of vowels, consonants, digits, and special characters present in it.
+//Ex. 5.B. Write a Java program that accepts two strings from the user and checks if they are anagrams of each other.
+//Given two strings s and t, return true if t is an anagram of s, and false otherwise.
 
 import java.util.Scanner;
+import java.util.Arrays;
 
 public class CharacterCounter {
     public static void main(String[] args) {
         // Initialize Scanner for user input
         Scanner scanner = new Scanner(System.in);
         
-        System.out.print("Enter a string: ");
-        String input = scanner.nextLine();
+        System.out.print("Enter first string (s): ");
+        String s = scanner.nextLine();
         
-        // Counter variables
-        int vowels = 0;
-        int consonants = 0;
-        int digits = 0;
-        int specialChars = 0;
+        System.out.print("Enter second string (t): ");
+        String t = scanner.nextLine();
         
-        // Convert to lowercase to make checking simple
-        String lowerInput = input.toLowerCase();
+        // Check if the strings are anagrams
+        boolean result = isAnagram(s, t);
         
-        // Process each character in the string
-        for (int i = 0; i < lowerInput.length(); i++) {
-            char ch = lowerInput.charAt(i);
-            
-            // Check if the character is a letter
-            if (ch >= 'a' && ch <= 'z') {
-                // Determine if it is a vowel or a consonant
-                if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u') {
-                    vowels++;
-                } else {
-                    consonants++;
-                }
-            } 
-            // Check if the character is a digit
-            else if (ch >= '0' && ch <= '9') {
-                digits++;
-            } 
-            // Everything else is treated as a special character (spaces, punctuation, etc.)
-            else {
-                specialChars++;
-            }
-        }
+        // Display the result
+        System.out.println(result);
         
-        // Display the results
-       
         // Close the scanner resource
         scanner.close();
+    }
+    
+    // Method to check if two strings are anagrams
+    public static boolean isAnagram(String s, String t) {
+        // If lengths are different, they cannot be anagrams
+        if (s.length() != t.length()) {
+            return false;
+        }
+        
+        // Convert both strings to character arrays and sort them
+        char[] sArray = s.toCharArray();
+        char[] tArray = t.toCharArray();
+        
+        Arrays.sort(sArray);
+        Arrays.sort(tArray);
+        
+        // Compare the sorted arrays
+        return Arrays.equals(sArray, tArray);
     }
 }
