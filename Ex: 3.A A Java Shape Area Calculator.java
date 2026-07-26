@@ -55,7 +55,7 @@ public class Circle implements Shape {
 
     @Override
     public void displayDetails() {
-        System.out.printf("Circle:%nRadius = %.1f %nArea of Circle = %f%n", radius, calculateArea());
+        System.out.printf("Circle:%nRadius = %.1f %nArea of Circle = %.14f%n", radius, calculateArea());
         System.out.println();
     }
 }
